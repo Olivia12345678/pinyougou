@@ -6,7 +6,7 @@ import java.util.List;
 import com.pinyougou.pojo.TbSpecification;
 import com.pinyougou.pojo.TbSpecificationOption;
 /**
- * ¹æ¸ñ×éºÏÊµÌåÀà
+ * è§„æ ¼ç»„åˆå®ä½“ç±»
  * @author Administrator
  *
  */

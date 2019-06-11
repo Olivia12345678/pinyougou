@@ -19,7 +19,7 @@ import com.pinyougou.sellergoods.service.SpecificationService;
 import entity.PageResult;
 
 /**
- * 鏈嶅姟瀹炵幇灞�
+ * 服务实现层
  * @author Administrator
  *
  */
@@ -33,7 +33,7 @@ public class SpecificationServiceImpl implements SpecificationService {
 	private TbSpecificationOptionMapper specificationOptionMapper;
 	
 	/**
-	 * 鏌ヨ鍏ㄩ儴
+	 * 查询全部
 	 */
 	@Override
 	public List<TbSpecification> findAll() {
@@ -41,7 +41,7 @@ public class SpecificationServiceImpl implements SpecificationService {
 	}
 
 	/**
-	 * 鎸夊垎椤垫煡璇�
+	 * 按分页查询
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -51,61 +51,51 @@ public class SpecificationServiceImpl implements SpecificationService {
 	}
 
 	/**
-	 * 澧炲姞
+	 * 增加
 	 */
 	@Override
 	public void add(Specification specification) {
-		//鑾峰彇瑙勬牸瀹炰綋
+		//获取规格实体
 		TbSpecification tbspecification = specification.getSpecification();				
 		specificationMapper.insert(tbspecification);	
-		/**
-		 * 执行后，将id赋给TbSpecification对象，并返回TbSpecification 对象
-		 * <insert id="insert" parameterType="com.pinyougou.pojo.TbSpecification" >
-		//			<!--   插入后获取插入的id -->
-		//			  	<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
-		//					SELECT LAST_INSERT_ID() AS id
-		//				</selectKey>
-		//			    insert into tb_specification (id, spec_name)
-		//			    values (#{id,jdbcType=BIGINT}, #{specName,jdbcType=VARCHAR})
-		//			  </insert>
-		 */
-		//鑾峰彇瑙勬牸閫夐」闆嗗悎
+		
+		//获取规格选项集合
 		List<TbSpecificationOption> specificationOptionList = specification.getSpecificationOptionList();
 		for( TbSpecificationOption option:specificationOptionList){
-			option.setSpecId(tbspecification.getId());//璁剧疆瑙勬牸ID
-			specificationOptionMapper.insert(option);//鏂板瑙勬牸
+			option.setSpecId(tbspecification.getId());//设置规格ID
+			specificationOptionMapper.insert(option);//新增规格
 		}
 	}
 
 	
 	/**
-	 * 淇敼
+	 * 修改
 	 */
 	@Override
 	public void update(Specification specification){
 		
-		//鑾峰彇瑙勬牸瀹炰綋
+		//获取规格实体
 		TbSpecification tbspecification = specification.getSpecification();				
 		specificationMapper.updateByPrimaryKey(tbspecification);	
 		
-		//鍒犻櫎鍘熸潵瑙勬牸瀵瑰簲鐨勮鏍奸�夐」	
+		//删除原来规格对应的规格选项	
 		
 		TbSpecificationOptionExample example=new TbSpecificationOptionExample();
 		com.pinyougou.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
 		criteria.andSpecIdEqualTo(tbspecification.getId());
 		specificationOptionMapper.deleteByExample(example);
 		
-		//鑾峰彇瑙勬牸閫夐」闆嗗悎
+		//获取规格选项集合
 		List<TbSpecificationOption> specificationOptionList = specification.getSpecificationOptionList();
 		for( TbSpecificationOption option:specificationOptionList){
-			option.setSpecId(tbspecification.getId());//璁剧疆瑙勬牸ID
-			specificationOptionMapper.insert(option);//鏂板瑙勬牸
+			option.setSpecId(tbspecification.getId());//设置规格ID
+			specificationOptionMapper.insert(option);//新增规格
 		}
 		
 	}	
 	
 	/**
-	 * 鏍规嵁ID鑾峰彇瀹炰綋
+	 * 根据ID获取实体
 	 * @param id
 	 * @return
 	 */
@@ -113,11 +103,11 @@ public class SpecificationServiceImpl implements SpecificationService {
 	public Specification findOne(Long id){
 		
 		Specification specification=new Specification();
-		//鑾峰彇瑙勬牸瀹炰綋
+		//获取规格实体
 		TbSpecification tbSpecification = specificationMapper.selectByPrimaryKey(id);
 		specification.setSpecification(tbSpecification);
 		
-		//鑾峰彇瑙勬牸閫夐」鍒楄〃	
+		//获取规格选项列表	
 		
 		TbSpecificationOptionExample example=new TbSpecificationOptionExample();
 		com.pinyougou.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
@@ -126,19 +116,19 @@ public class SpecificationServiceImpl implements SpecificationService {
 		
 		specification.setSpecificationOptionList(specificationOptionList);
 		
-		return specification;//缁勫悎瀹炰綋绫�
+		return specification;//组合实体类
 	}
 
 	/**
-	 * 鎵归噺鍒犻櫎
+	 * 批量删除
 	 */
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			//鍒犻櫎瑙勬牸琛ㄦ暟鎹�
+			//删除规格表数据
 			specificationMapper.deleteByPrimaryKey(id);
 			
-			//鍒犻櫎瑙勬牸閫夐」琛ㄦ暟鎹�		
+			//删除规格选项表数据		
 			TbSpecificationOptionExample example=new TbSpecificationOptionExample();
 			com.pinyougou.pojo.TbSpecificationOptionExample.Criteria criteria = example.createCriteria();
 			criteria.andSpecIdEqualTo(id);

@@ -1,7 +1,6 @@
  //控制层 
 app.controller('brandController' ,function($scope,$controller   ,brandService){	
 	
-	//伪继承，复制将baseController中的方法，baseController中的$scope适用于本controller
 	$controller('baseController',{$scope:$scope});//继承
 	
     //读取列表数据绑定到表单中  
