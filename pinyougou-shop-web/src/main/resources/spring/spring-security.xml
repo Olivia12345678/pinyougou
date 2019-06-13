@@ -40,9 +40,9 @@
 		<beans:property name="sellerService" ref="sellerService"></beans:property>
 	</beans:bean>
 	
-	<!-- 引用dubbo 服务 用dubbox来获取远程的service，并赋给认证类属性-->
+	<!-- 引用dubbo 服务 -->
 	<dubbo:application name="pinyougou-shop-web" />
-	<dubbo:registry address="zookeeper://192.168.25.137:2181"/>	
+	<dubbo:registry address="zookeeper://192.168.25.138:2181"/>	
 	<dubbo:reference id="sellerService" interface="com.pinyougou.sellergoods.service.SellerService"></dubbo:reference>
 	
 	

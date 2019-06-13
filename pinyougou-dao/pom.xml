@@ -7,7 +7,6 @@
   </parent>
   <artifactId>pinyougou-dao</artifactId>
   
-  
   <dependencies>
   	<dependency>
 	    <groupId>com.github.pagehelper</groupId>
