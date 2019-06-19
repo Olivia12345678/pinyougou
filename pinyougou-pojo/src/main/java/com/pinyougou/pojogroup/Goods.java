@@ -8,15 +8,15 @@ import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
 import com.pinyougou.pojo.TbItem;
 /**
- * ÉÌÆ·×éºÏÊµÌåÀà
+ * å•†å“ç»„åˆå®ä½“ç±»
  * @author Administrator
  *
  */
 public class Goods implements Serializable{
 	
-	private TbGoods goods;//ÉÌÆ·SPU»ù±¾ĞÅÏ¢
-	private TbGoodsDesc goodsDesc;	//ÉÌÆ·SPUÀ©Õ¹ĞÅÏ¢
-	private List<TbItem> itemList;//SKUÁĞ±í
+	private TbGoods goods;//å•†å“SPUåŸºæœ¬ä¿¡æ¯
+	private TbGoodsDesc goodsDesc;	//å•†å“SPUæ‰©å±•ä¿¡æ¯
+	private List<TbItem> itemList;//SKUåˆ—è¡¨
 	
 	public TbGoods getGoods() {
 		return goods;

@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -15,18 +17,19 @@ import com.pinyougou.sellergoods.service.BrandService;
 import entity.PageResult;
 
 /**
- * æœåŠ¡å®ç°å±‚
+ * ·şÎñÊµÏÖ²ã
  * @author Administrator
  *
  */
 @Service
+@Transactional
 public class BrandServiceImpl implements BrandService {
 
 	@Autowired
 	private TbBrandMapper brandMapper;
 	
 	/**
-	 * æŸ¥è¯¢å…¨éƒ¨
+	 * ²éÑ¯È«²¿
 	 */
 	@Override
 	public List<TbBrand> findAll() {
@@ -34,7 +37,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	/**
-	 * æŒ‰åˆ†é¡µæŸ¥è¯¢
+	 * °´·ÖÒ³²éÑ¯
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -44,7 +47,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	/**
-	 * å¢åŠ 
+	 * Ôö¼Ó
 	 */
 	@Override
 	public void add(TbBrand brand) {
@@ -53,7 +56,7 @@ public class BrandServiceImpl implements BrandService {
 
 	
 	/**
-	 * ä¿®æ”¹
+	 * ĞŞ¸Ä
 	 */
 	@Override
 	public void update(TbBrand brand){
@@ -61,7 +64,7 @@ public class BrandServiceImpl implements BrandService {
 	}	
 	
 	/**
-	 * æ ¹æ®IDè·å–å®ä½“
+	 * ¸ù¾İID»ñÈ¡ÊµÌå
 	 * @param id
 	 * @return
 	 */
@@ -71,7 +74,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	/**
-	 * æ‰¹é‡åˆ é™¤
+	 * ÅúÁ¿É¾³ı
 	 */
 	@Override
 	public void delete(Long[] ids) {

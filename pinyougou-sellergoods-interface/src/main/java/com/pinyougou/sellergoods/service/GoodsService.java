@@ -34,7 +34,7 @@ public interface GoodsService {
 	/**
 	 * ÐÞ¸Ä
 	 */
-	public void update(TbGoods goods);
+	public void update(Goods goods);
 	
 
 	/**
@@ -42,7 +42,7 @@ public interface GoodsService {
 	 * @param id
 	 * @return
 	 */
-	public TbGoods findOne(Long id);
+	public Goods findOne(Long id);
 	
 	
 	/**
@@ -58,5 +58,12 @@ public interface GoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum,int pageSize);
+	
+	/**
+	 * ÐÞ¸Ä×´Ì¬
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStatus(Long [] ids,String status );
 	
 }

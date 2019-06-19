@@ -2,6 +2,8 @@ package com.pinyougou.sellergoods.service.impl;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -14,18 +16,19 @@ import com.pinyougou.sellergoods.service.SellerService;
 import entity.PageResult;
 
 /**
- * æœåŠ¡å®ç°å±‚
+ * ·şÎñÊµÏÖ²ã
  * @author Administrator
  *
  */
 @Service
+@Transactional
 public class SellerServiceImpl implements SellerService {
 
 	@Autowired
 	private TbSellerMapper sellerMapper;
 	
 	/**
-	 * æŸ¥è¯¢å…¨éƒ¨
+	 * ²éÑ¯È«²¿
 	 */
 	@Override
 	public List<TbSeller> findAll() {
@@ -33,7 +36,7 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	/**
-	 * æŒ‰åˆ†é¡µæŸ¥è¯¢
+	 * °´·ÖÒ³²éÑ¯
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -43,18 +46,18 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	/**
-	 * å¢åŠ 
+	 * Ôö¼Ó
 	 */
 	@Override
 	public void add(TbSeller seller) {		
-		seller.setStatus("0");//çŠ¶æ€
-		seller.setCreateTime(new Date());//ç”³è¯·æ—¥æœŸ
+		seller.setStatus("0");//×´Ì¬
+		seller.setCreateTime(new Date());//ÉêÇëÈÕÆÚ
 		sellerMapper.insert(seller);		
 	}
 
 	
 	/**
-	 * ä¿®æ”¹
+	 * ĞŞ¸Ä
 	 */
 	@Override
 	public void update(TbSeller seller){
@@ -62,7 +65,7 @@ public class SellerServiceImpl implements SellerService {
 	}	
 	
 	/**
-	 * æ ¹æ®IDè·å–å®ä½“
+	 * ¸ù¾İID»ñÈ¡ÊµÌå
 	 * @param id
 	 * @return
 	 */
@@ -72,7 +75,7 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	/**
-	 * æ‰¹é‡åˆ é™¤
+	 * ÅúÁ¿É¾³ı
 	 */
 	@Override
 	public void delete(String[] ids) {

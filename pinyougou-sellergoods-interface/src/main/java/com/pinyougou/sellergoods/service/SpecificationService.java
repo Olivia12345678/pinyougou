@@ -7,40 +7,40 @@ import com.pinyougou.pojogroup.Specification;
 
 import entity.PageResult;
 /**
- * æœåŠ¡å±‚æ¥å£
+ * ·şÎñ²ã½Ó¿Ú
  * @author Administrator
  *
  */
 public interface SpecificationService {
 
 	/**
-	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
+	 * ·µ»ØÈ«²¿ÁĞ±í
 	 * @return
 	 */
 	public List<TbSpecification> findAll();
 	
 	
 	/**
-	 * è¿”å›åˆ†é¡µåˆ—è¡¨
+	 * ·µ»Ø·ÖÒ³ÁĞ±í
 	 * @return
 	 */
 	public PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
-	 * å¢åŠ 
+	 * Ôö¼Ó
 	*/
 	public void add(Specification specification);
 	
 	
 	/**
-	 * ä¿®æ”¹
+	 * ĞŞ¸Ä
 	 */
 	public void update(Specification specification);
 	
 
 	/**
-	 * æ ¹æ®IDè·å–å®ä½“
+	 * ¸ù¾İID»ñÈ¡ÊµÌå
 	 * @param id
 	 * @return
 	 */
@@ -48,15 +48,15 @@ public interface SpecificationService {
 	
 	
 	/**
-	 * æ‰¹é‡åˆ é™¤
+	 * ÅúÁ¿É¾³ı
 	 * @param ids
 	 */
 	public void delete(Long [] ids);
 
 	/**
-	 * åˆ†é¡µ
-	 * @param pageNum å½“å‰é¡µ ç 
-	 * @param pageSize æ¯é¡µè®°å½•æ•°
+	 * ·ÖÒ³
+	 * @param pageNum µ±Ç°Ò³ Âë
+	 * @param pageSize Ã¿Ò³¼ÇÂ¼Êı
 	 * @return
 	 */
 	public PageResult findPage(TbSpecification specification, int pageNum,int pageSize);

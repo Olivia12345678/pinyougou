@@ -1,6 +1,8 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -13,18 +15,19 @@ import com.pinyougou.sellergoods.service.ItemCatService;
 import entity.PageResult;
 
 /**
- * æœåŠ¡å®ç°å±‚
+ * ·şÎñÊµÏÖ²ã
  * @author Administrator
  *
  */
 @Service
+@Transactional
 public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
 	private TbItemCatMapper itemCatMapper;
 	
 	/**
-	 * æŸ¥è¯¢å…¨éƒ¨
+	 * ²éÑ¯È«²¿
 	 */
 	@Override
 	public List<TbItemCat> findAll() {
@@ -32,7 +35,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 
 	/**
-	 * æŒ‰åˆ†é¡µæŸ¥è¯¢
+	 * °´·ÖÒ³²éÑ¯
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -42,7 +45,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 
 	/**
-	 * å¢åŠ 
+	 * Ôö¼Ó
 	 */
 	@Override
 	public void add(TbItemCat itemCat) {
@@ -51,7 +54,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 	
 	/**
-	 * ä¿®æ”¹
+	 * ĞŞ¸Ä
 	 */
 	@Override
 	public void update(TbItemCat itemCat){
@@ -59,7 +62,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}	
 	
 	/**
-	 * æ ¹æ®IDè·å–å®ä½“
+	 * ¸ù¾İID»ñÈ¡ÊµÌå
 	 * @param id
 	 * @return
 	 */
@@ -69,7 +72,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 
 	/**
-	 * æ‰¹é‡åˆ é™¤
+	 * ÅúÁ¿É¾³ı
 	 */
 	@Override
 	public void delete(Long[] ids) {
