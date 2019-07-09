@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService,itemCatService){	
+app.controller('goodsController' ,function($scope,$controller,itemCatService   ,goodsService){	
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -41,7 +41,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 		}				
 		serviceObject.success(
 			function(response){
-				if(response.success){
+				if(response.flag){
 					//重新查询 
 		        	$scope.reloadList();//重新加载
 				}else{
@@ -57,9 +57,9 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 		//获取选中的复选框			
 		goodsService.dele( $scope.selectIds ).success(
 			function(response){
-				if(response.success){
+				if(response.flag){
 					$scope.reloadList();//刷新列表
-					$scope.selectIds=[];
+					$scope.selectIds = [];
 				}						
 			}		
 		);				
@@ -77,34 +77,29 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 		);
 	}
     
+	// 显示状态
+	$scope.status = ["未审核","审核通过","审核未通过","关闭"];
 	
-	$scope.status=['未审核','已审核','审核未通过','已关闭'];
-	
-	$scope.itemCatList=[];//商品分类列表
-	//查询商品分类列表
-	$scope.findItemCatList=function(){
-		itemCatService.findAll().success(
-			function(response){
-				for(var i=0;i<response.length;i++){
-					$scope.itemCatList[response[i].id]=response[i].name;
-				}
-			}
-		);
+	$scope.itemCatList = [];
+	// 显示分类:
+	$scope.findItemCatList = function(){
 		
-	}
-	
-	//更新状态
-	$scope.updateStatus=function(status){
-		goodsService.updateStatus( $scope.selectIds ,status).success(
-			function(response){
-				if(response.success){
-					$scope.reloadList();//刷新页面
-					$scope.selectIds=[];
-				}else{
-					alert(response.message);
-				}				
+		itemCatService.findAll().success(function(response){
+			for(var i=0;i<response.length;i++){
+				$scope.itemCatList[response[i].id] = response[i].name;
 			}
-		);		
+		});
 	}
 	
+	// 审核的方法:
+	$scope.updateStatus = function(status){
+		goodsService.updateStatus($scope.selectIds,status).success(function(response){
+			if(response.flag){
+				$scope.reloadList();//刷新列表
+				$scope.selectIds = [];
+			}else{
+				alert(response.message);
+			}
+		});
+	}
 });	

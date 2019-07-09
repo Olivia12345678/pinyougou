@@ -4,40 +4,40 @@ import com.pinyougou.pojo.TbSeller;
 
 import entity.PageResult;
 /**
- * ·şÎñ²ã½Ó¿Ú
+ * æœåŠ¡å±‚æ¥å£
  * @author Administrator
  *
  */
 public interface SellerService {
 
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
 	 * @return
 	 */
 	public List<TbSeller> findAll();
 	
 	
 	/**
-	 * ·µ»Ø·ÖÒ³ÁĞ±í
+	 * è¿”å›åˆ†é¡µåˆ—è¡¨
 	 * @return
 	 */
 	public PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	*/
 	public void add(TbSeller seller);
 	
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	public void update(TbSeller seller);
 	
 
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -45,24 +45,19 @@ public interface SellerService {
 	
 	
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 * @param ids
 	 */
 	public void delete(String [] ids);
 
 	/**
-	 * ·ÖÒ³
-	 * @param pageNum µ±Ç°Ò³ Âë
-	 * @param pageSize Ã¿Ò³¼ÇÂ¼Êı
+	 * åˆ†é¡µ
+	 * @param pageNum å½“å‰é¡µ ç 
+	 * @param pageSize æ¯é¡µè®°å½•æ•°
 	 * @return
 	 */
 	public PageResult findPage(TbSeller seller, int pageNum,int pageSize);
 	
-	/**
-	 * ¸üĞÂ×´Ì¬
-	 * @param sellerId
-	 * @param status
-	 */
-	public void updateStatus(String sellerId,String status);
 	
+	public void updateStatus(String sellerId,String status);
 }

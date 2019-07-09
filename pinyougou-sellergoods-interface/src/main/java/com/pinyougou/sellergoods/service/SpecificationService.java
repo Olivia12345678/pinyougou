@@ -3,44 +3,44 @@ import java.util.List;
 import java.util.Map;
 
 import com.pinyougou.pojo.TbSpecification;
-import com.pinyougou.pojogroup.Specification;
+import com.pinyougou.pojo.group.Specification;
 
 import entity.PageResult;
 /**
- * ·şÎñ²ã½Ó¿Ú
+ * æœåŠ¡å±‚æ¥å£
  * @author Administrator
  *
  */
 public interface SpecificationService {
 
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
 	 * @return
 	 */
 	public List<TbSpecification> findAll();
 	
 	
 	/**
-	 * ·µ»Ø·ÖÒ³ÁĞ±í
+	 * è¿”å›åˆ†é¡µåˆ—è¡¨
 	 * @return
 	 */
 	public PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	*/
 	public void add(Specification specification);
 	
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	public void update(Specification specification);
 	
 
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -48,20 +48,18 @@ public interface SpecificationService {
 	
 	
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 * @param ids
 	 */
-	public void delete(Long [] ids);
+	public void delete(Long[] ids);
 
 	/**
-	 * ·ÖÒ³
-	 * @param pageNum µ±Ç°Ò³ Âë
-	 * @param pageSize Ã¿Ò³¼ÇÂ¼Êı
+	 * åˆ†é¡µ
+	 * @param pageNum å½“å‰é¡µ ç 
+	 * @param pageSize æ¯é¡µè®°å½•æ•°
 	 * @return
 	 */
 	public PageResult findPage(TbSpecification specification, int pageNum,int pageSize);
 	
-	
 	public List<Map> selectOptionList();
-	
 }

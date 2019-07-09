@@ -1,14 +1,9 @@
-app.controller('indexController',function($scope,loginService){
+app.controller("indexController",function($scope,loginService){
 	
-	
-	//显示当前用户名
-	$scope.showLoginName=function(){
-		loginService.loginName().success(
-			function(response){
-				$scope.loginName=response.loginName;				
-			}
-		);		
+	$scope.showName = function(){
+		loginService.showName().success(function(response){
+			$scope.loginName = response.username;
+		});
 	}
-	
 	
 });

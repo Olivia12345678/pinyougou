@@ -1,68 +1,48 @@
 package com.pinyougou.sellergoods.service;
+
 import java.util.List;
 import java.util.Map;
 
 import com.pinyougou.pojo.TbBrand;
 
 import entity.PageResult;
+
 /**
- * ·şÎñ²ã½Ó¿Ú
- * @author Administrator
+ * å“ç‰Œç®¡ç†çš„æœåŠ¡å±‚æ¥å£
+ * @author jt
  *
  */
 public interface BrandService {
-
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * æŸ¥è¯¢æ‰€æœ‰å“ç‰Œåˆ—è¡¨çš„æ¥å£çš„æ–¹æ³•
 	 * @return
 	 */
 	public List<TbBrand> findAll();
 	
-	
 	/**
-	 * ·µ»Ø·ÖÒ³ÁĞ±í
-	 * @return
+	 * åˆ†é¡µæŸ¥è¯¢å“ç‰Œçš„æ–¹æ³•
 	 */
-	public PageResult findPage(int pageNum,int pageSize);
-	
-	
-	/**
-	 * Ôö¼Ó
-	*/
-	public void add(TbBrand brand);
-	
+	public PageResult findByPage(TbBrand brand,int pageNum,int pageSize);
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿å­˜å“ç‰Œçš„æ–¹æ³•
+	 */
+	public void save(TbBrand brand);
+	
+	/**
+	 * æŸ¥è¯¢ä¸€ä¸ªå“ç‰Œ
+	 */
+	public TbBrand findById(Long id);
+	
+	/**
+	 * ä¿®æ”¹å“ç‰Œçš„æ–¹æ³•
 	 */
 	public void update(TbBrand brand);
 	
-
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
-	 * @param id
-	 * @return
+	 * åˆ é™¤å¤šä¸ª
 	 */
-	public TbBrand findOne(Long id);
+	public void delete(Long[] ids);
 	
-	
-	/**
-	 * ÅúÁ¿É¾³ı
-	 * @param ids
-	 */
-	public void delete(Long [] ids);
-
-	/**
-	 * ·ÖÒ³
-	 * @param pageNum µ±Ç°Ò³ Âë
-	 * @param pageSize Ã¿Ò³¼ÇÂ¼Êı
-	 * @return
-	 */
-	public PageResult findPage(TbBrand brand, int pageNum,int pageSize);
-	
-	/**
-	 * ·µ»ØÏÂÀ­ÁĞ±íÊı¾İ
-	 * @return
-	 */
 	public List<Map> selectOptionList();
 }

@@ -23,7 +23,7 @@ public class ItemCatController {
 	private ItemCatService itemCatService;
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -33,7 +33,7 @@ public class ItemCatController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -42,7 +42,7 @@ public class ItemCatController {
 	}
 	
 	/**
-	 * 增加
+	 * 澧炲姞
 	 * @param itemCat
 	 * @return
 	 */
@@ -50,15 +50,15 @@ public class ItemCatController {
 	public Result add(@RequestBody TbItemCat itemCat){
 		try {
 			itemCatService.add(itemCat);
-			return new Result(true, "增加成功");
+			return new Result(true, "澧炲姞鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "增加失败");
+			return new Result(false, "澧炲姞澶辫触");
 		}
 	}
 	
 	/**
-	 * 修改
+	 * 淇敼
 	 * @param itemCat
 	 * @return
 	 */
@@ -66,15 +66,15 @@ public class ItemCatController {
 	public Result update(@RequestBody TbItemCat itemCat){
 		try {
 			itemCatService.update(itemCat);
-			return new Result(true, "修改成功");
+			return new Result(true, "淇敼鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "修改失败");
+			return new Result(false, "淇敼澶辫触");
 		}
 	}	
 	
 	/**
-	 * 获取实体
+	 * 鑾峰彇瀹炰綋
 	 * @param id
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class ItemCatController {
 	}
 	
 	/**
-	 * 批量删除
+	 * 鎵归噺鍒犻櫎
 	 * @param ids
 	 * @return
 	 */
@@ -92,15 +92,15 @@ public class ItemCatController {
 	public Result delete(Long [] ids){
 		try {
 			itemCatService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "鍒犻櫎鎴愬姛"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "删除失败");
+			return new Result(false, "鍒犻櫎澶辫触");
 		}
 	}
 	
 		/**
-	 * 查询+分页
+	 * 鏌ヨ+鍒嗛〉
 	 * @param brand
 	 * @param page
 	 * @param rows
@@ -111,15 +111,8 @@ public class ItemCatController {
 		return itemCatService.findPage(itemCat, page, rows);		
 	}
 	
-	/**
-	 * 根据上级ID查询商品分类列表
-	 * @param parentId
-	 * @return
-	 */
 	@RequestMapping("/findByParentId")
 	public List<TbItemCat> findByParentId(Long parentId){
 		return itemCatService.findByParentId(parentId);
 	}
-	
-	
 }

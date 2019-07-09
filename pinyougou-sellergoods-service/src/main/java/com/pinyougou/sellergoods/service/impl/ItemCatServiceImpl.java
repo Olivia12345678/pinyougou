@@ -1,7 +1,7 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -15,19 +15,18 @@ import com.pinyougou.sellergoods.service.ItemCatService;
 import entity.PageResult;
 
 /**
- * ·şÎñÊµÏÖ²ã
+ * æœåŠ¡å®ç°å±‚
  * @author Administrator
  *
  */
 @Service
-@Transactional
 public class ItemCatServiceImpl implements ItemCatService {
 
 	@Autowired
 	private TbItemCatMapper itemCatMapper;
 	
 	/**
-	 * ²éÑ¯È«²¿
+	 * æŸ¥è¯¢å…¨éƒ¨
 	 */
 	@Override
 	public List<TbItemCat> findAll() {
@@ -35,7 +34,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 
 	/**
-	 * °´·ÖÒ³²éÑ¯
+	 * æŒ‰åˆ†é¡µæŸ¥è¯¢
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -45,7 +44,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	 */
 	@Override
 	public void add(TbItemCat itemCat) {
@@ -54,7 +53,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	@Override
 	public void update(TbItemCat itemCat){
@@ -62,7 +61,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}	
 	
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -72,7 +71,7 @@ public class ItemCatServiceImpl implements ItemCatService {
 	}
 
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 */
 	@Override
 	public void delete(Long[] ids) {
@@ -99,12 +98,26 @@ public class ItemCatServiceImpl implements ItemCatService {
 		Page<TbItemCat> page= (Page<TbItemCat>)itemCatMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
+		
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 	@Override
 	public List<TbItemCat> findByParentId(Long parentId) {
-		TbItemCatExample example=new TbItemCatExample();
+		TbItemCatExample example = new TbItemCatExample();
 		Criteria criteria = example.createCriteria();
+		// è®¾ç½®æ¡ä»¶:
 		criteria.andParentIdEqualTo(parentId);
+		// æ¡ä»¶æŸ¥è¯¢
+		
+		//å°†æ¨¡æ¿IDæ”¾å…¥ç¼“å­˜ï¼ˆä»¥å•†å“åˆ†ç±»åç§°ä½œä¸ºkeyï¼‰	
+		
+		List<TbItemCat> itemCatList = findAll();
+		for(TbItemCat itemCat:itemCatList){
+			redisTemplate.boundHashOps("itemCat").put(itemCat.getName(), itemCat.getTypeId());
+		}
+		System.out.println("å°†æ¨¡æ¿IDæ”¾å…¥ç¼“å­˜");
+		
 		return itemCatMapper.selectByExample(example);
 	}
 	

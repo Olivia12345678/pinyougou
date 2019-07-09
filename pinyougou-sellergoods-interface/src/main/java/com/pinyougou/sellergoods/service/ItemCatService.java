@@ -4,40 +4,40 @@ import com.pinyougou.pojo.TbItemCat;
 
 import entity.PageResult;
 /**
- * ÉÌÆ··ÖÀà·şÎñ²ã½Ó¿Ú
+ * æœåŠ¡å±‚æ¥å£
  * @author Administrator
  *
  */
 public interface ItemCatService {
 
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
 	 * @return
 	 */
 	public List<TbItemCat> findAll();
 	
 	
 	/**
-	 * ·µ»Ø·ÖÒ³ÁĞ±í
+	 * è¿”å›åˆ†é¡µåˆ—è¡¨
 	 * @return
 	 */
 	public PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	*/
 	public void add(TbItemCat itemCat);
 	
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	public void update(TbItemCat itemCat);
 	
 
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -45,24 +45,23 @@ public interface ItemCatService {
 	
 	
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 * @param ids
 	 */
 	public void delete(Long [] ids);
 
 	/**
-	 * ·ÖÒ³
-	 * @param pageNum µ±Ç°Ò³ Âë
-	 * @param pageSize Ã¿Ò³¼ÇÂ¼Êı
+	 * åˆ†é¡µ
+	 * @param pageNum å½“å‰é¡µ ç 
+	 * @param pageSize æ¯é¡µè®°å½•æ•°
 	 * @return
 	 */
 	public PageResult findPage(TbItemCat itemCat, int pageNum,int pageSize);
 	
 	/**
-	 * ¸ù¾İÉÏ¼¶ID²éÑ¯ÉÌÆ··ÖÀàÁĞ±í
+	 * æ ¹æ®çˆ¶IDæŸ¥è¯¢åˆ†ç±»çš„æ–¹æ³•
 	 * @param parentId
 	 * @return
 	 */
 	public List<TbItemCat> findByParentId(Long parentId);
-	
 }

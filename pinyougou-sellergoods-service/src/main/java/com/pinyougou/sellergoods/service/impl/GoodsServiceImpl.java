@@ -1,8 +1,11 @@
 package com.pinyougou.sellergoods.service.impl;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.solr.common.util.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,18 +23,18 @@ import com.pinyougou.pojo.TbBrand;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
 import com.pinyougou.pojo.TbGoodsExample;
+import com.pinyougou.pojo.TbGoodsExample.Criteria;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojo.TbItemCat;
 import com.pinyougou.pojo.TbItemExample;
 import com.pinyougou.pojo.TbSeller;
-import com.pinyougou.pojo.TbGoodsExample.Criteria;
-import com.pinyougou.pojogroup.Goods;
+import com.pinyougou.pojo.group.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
 
 /**
- * ·şÎñÊµÏÖ²ã
+ * æœåŠ¡å®ç°å±‚
  * @author Administrator
  *
  */
@@ -43,7 +46,7 @@ public class GoodsServiceImpl implements GoodsService {
 	private TbGoodsMapper goodsMapper;
 	
 	/**
-	 * ²éÑ¯È«²¿
+	 * æŸ¥è¯¢å…¨éƒ¨
 	 */
 	@Override
 	public List<TbGoods> findAll() {
@@ -51,7 +54,7 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	/**
-	 * °´·ÖÒ³²éÑ¯
+	 * æŒ‰åˆ†é¡µæŸ¥è¯¢
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -62,7 +65,6 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
 	private TbGoodsDescMapper goodsDescMapper;
-	
 	
 	@Autowired
 	private TbItemMapper itemMapper;
@@ -76,139 +78,140 @@ public class GoodsServiceImpl implements GoodsService {
 	@Autowired
 	private TbSellerMapper sellerMapper;
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	 */
 	@Override
 	public void add(Goods goods) {
+		goods.getGoods().setAuditStatus("0"); // è®¾ç½®å®¡æ ¸çš„çŠ¶æ€
 		
-		goods.getGoods().setAuditStatus("0");//×´Ì¬£ºÎ´ÉóºË
-		goodsMapper.insert(goods.getGoods());//²åÈëÉÌÆ·»ù±¾ĞÅÏ¢
+		goodsMapper.insert(goods.getGoods()); // æ’å…¥å•†å“ä¿¡æ¯
 		
-		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());//½«ÉÌÆ·»ù±¾±íµÄID¸øÉÌÆ·À©Õ¹±í
-		goodsDescMapper.insert(goods.getGoodsDesc());//²åÈëÉÌÆ·À©Õ¹±íÊı¾İ
+		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
 		
-		saveItemList(goods);//²åÈëSKUÉÌÆ·Êı¾İ	
+		goodsDescMapper.insert(goods.getGoodsDesc()); // æ’å…¥å•†å“çš„æ‰©å±•ä¿¡æ¯
 		
+		setItemList(goods);
 	}
 	
-	private void setItemValues(TbItem item,Goods goods){
-		//ÉÌÆ··ÖÀà 
-		item.setCategoryid(goods.getGoods().getCategory3Id());//Èı¼¶·ÖÀàID
-		item.setCreateTime(new Date());//´´½¨ÈÕÆÚ
-		item.setUpdateTime(new Date());//¸üĞÂÈÕÆÚ 
-		
-		item.setGoodsId(goods.getGoods().getId());//ÉÌÆ·ID
-		item.setSellerId(goods.getGoods().getSellerId());//ÉÌ¼ÒID
-		
-		//·ÖÀàÃû³Æ			
-		TbItemCat itemCat = itemCatMapper.selectByPrimaryKey(goods.getGoods().getCategory3Id());
-		item.setCategory(itemCat.getName());
-		//Æ·ÅÆÃû³Æ
-		TbBrand brand = brandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
-		item.setBrand(brand.getName());
-		//ÉÌ¼ÒÃû³Æ(µêÆÌÃû³Æ)			
-		TbSeller seller = sellerMapper.selectByPrimaryKey(goods.getGoods().getSellerId());
-		item.setSeller(seller.getNickName());
-		
-		//Í¼Æ¬
-		List<Map> imageList = JSON.parseArray( goods.getGoodsDesc().getItemImages(), Map.class) ;
-		if(imageList.size()>0){
-			item.setImage( (String)imageList.get(0).get("url"));
-		}
-		
-	}
-	
-	//²åÈëskuÁĞ±íÊı¾İ
-	private void saveItemList(Goods goods){
-		
+	private void setItemList(Goods goods){
 		if("1".equals(goods.getGoods().getIsEnableSpec())){
-			for(TbItem item:   goods.getItemList()){
-				//¹¹½¨±êÌâ  SPUÃû³Æ+ ¹æ¸ñÑ¡ÏîÖµ
-				String title=goods.getGoods().getGoodsName();//SPUÃû³Æ
-				Map<String,Object> map=  JSON.parseObject(item.getSpec());
-				for(String key:map.keySet()) {
-					title+=" "+map.get(key);
+			// å¯ç”¨è§„æ ¼
+			// ä¿å­˜SKUåˆ—è¡¨çš„ä¿¡æ¯:
+			for(TbItem item:goods.getItemList()){
+				// è®¾ç½®SKUçš„æ•°æ®ï¼š
+				// item.setTitle(title);
+				String title = goods.getGoods().getGoodsName();
+				Map<String,String> map = JSON.parseObject(item.getSpec(), Map.class);
+				//Map<String,String> map = item.getSpec();
+				for (String key : map.keySet()) {
+					title+= " "+map.get(key);
 				}
 				item.setTitle(title);
 				
-				setItemValues(item,goods);
+				setValue(goods,item);
 				
 				itemMapper.insert(item);
 			}
-		}else{//Ã»ÓĞÆôÓÃ¹æ¸ñ			
+		}else{
+			// æ²¡æœ‰å¯ç”¨è§„æ ¼
+			TbItem item = new TbItem();
 			
-			TbItem item=new TbItem();
-			item.setTitle(goods.getGoods().getGoodsName());//±êÌâ
-			item.setPrice(goods.getGoods().getPrice());//¼Û¸ñ
-			item.setNum(99999);//¿â´æÊıÁ¿
-			item.setStatus("1");//×´Ì¬
-			item.setIsDefault("1");//Ä¬ÈÏ
-			item.setSpec("{}");//¹æ¸ñ
+			item.setTitle(goods.getGoods().getGoodsName());
 			
-			setItemValues(item,goods);
+			item.setPrice(goods.getGoods().getPrice());
 			
+			item.setNum(999);
+			
+			item.setStatus("0");
+			
+			item.setIsDefault("1");
+			item.setSpec("{}");
+			//item.setSpec(new HashMap());
+			setValue(goods,item);
 			itemMapper.insert(item);
 		}
-		
 	}
 
+	private void setValue(Goods goods,TbItem item){
+		List<Map> imageList = JSON.parseArray(goods.getGoodsDesc().getItemImages(),Map.class);
+		if(imageList.size()>0){
+			item.setImage((String)imageList.get(0).get("url"));
+		}
+		
+		// ä¿å­˜ä¸‰çº§åˆ†ç±»çš„ID:
+		item.setCategoryid(goods.getGoods().getCategory3Id());
+		item.setCreateTime(new Date());
+		item.setUpdateTime(new Date());
+		// è®¾ç½®å•†å“ID
+		item.setGoodsId(goods.getGoods().getId());
+		item.setSellerId(goods.getGoods().getSellerId());
+		
+		TbItemCat itemCat = itemCatMapper.selectByPrimaryKey(goods.getGoods().getCategory3Id());
+		item.setCategory(itemCat.getName());
+		
+		TbBrand brand = brandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
+		item.setBrand(brand.getName());
+		
+		TbSeller seller = sellerMapper.selectByPrimaryKey(goods.getGoods().getSellerId());
+		item.setSeller(seller.getNickName());
+	}
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	@Override
 	public void update(Goods goods){
-		//¸üĞÂ»ù±¾±íÊı¾İ
+		// ä¿®æ”¹å•†å“ä¿¡æ¯
+		goods.getGoods().setAuditStatus("0");
 		goodsMapper.updateByPrimaryKey(goods.getGoods());
-		//¸üĞÂÀ©Õ¹±íÊı¾İ
+		// ä¿®æ”¹å•†å“æ‰©å±•ä¿¡æ¯:
 		goodsDescMapper.updateByPrimaryKey(goods.getGoodsDesc());
-		
-		//É¾³ıÔ­ÓĞµÄSKUÁĞ±íÊı¾İ		
-		TbItemExample example=new TbItemExample();
+		// ä¿®æ”¹SKUä¿¡æ¯:
+		// å…ˆåˆ é™¤ï¼Œå†ä¿å­˜:
+		// åˆ é™¤SKUçš„ä¿¡æ¯:
+		TbItemExample example = new TbItemExample();
 		com.pinyougou.pojo.TbItemExample.Criteria criteria = example.createCriteria();
-		criteria.andGoodsIdEqualTo(goods.getGoods().getId());		
+		criteria.andGoodsIdEqualTo(goods.getGoods().getId());
 		itemMapper.deleteByExample(example);
-		
-		//²åÈëĞÂµÄSKUÁĞ±íÊı¾İ
-		saveItemList(goods);//²åÈëSKUÉÌÆ·Êı¾İ	
-		
+		// ä¿å­˜SKUçš„ä¿¡æ¯
+		setItemList(goods);
 	}	
 	
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
 	@Override
 	public Goods findOne(Long id){
-		Goods goods=new Goods();
-		//ÉÌÆ·»ù±¾±í
+		Goods goods = new Goods();
+		// æŸ¥è¯¢å•†å“è¡¨çš„ä¿¡æ¯
 		TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
 		goods.setGoods(tbGoods);
-		//ÉÌÆ·À©Õ¹±í
-		TbGoodsDesc goodsDesc = goodsDescMapper.selectByPrimaryKey(id);
-		goods.setGoodsDesc(goodsDesc);
+		// æŸ¥è¯¢å•†å“æ‰©å±•è¡¨çš„ä¿¡æ¯
+		TbGoodsDesc tbGoodsDesc = goodsDescMapper.selectByPrimaryKey(id);
+		goods.setGoodsDesc(tbGoodsDesc);
 		
-		//¶ÁÈ¡SKUÁĞ±í
-		
-		TbItemExample example=new TbItemExample();
+		// æŸ¥è¯¢SKUè¡¨çš„ä¿¡æ¯:
+		TbItemExample example = new TbItemExample();
 		com.pinyougou.pojo.TbItemExample.Criteria criteria = example.createCriteria();
 		criteria.andGoodsIdEqualTo(id);
-		List<TbItem> itemList = itemMapper.selectByExample(example);
-		goods.setItemList(itemList);
+		List<TbItem> list = itemMapper.selectByExample(example);
+		goods.setItemList(list);
 		
 		return goods;
 	}
 
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 */
 	@Override
 	public void delete(Long[] ids) {
-		for(Long id:ids){			
-			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
-			goods.setIsDelete("1");//±íÊ¾Âß¼­É¾³ı
-			goodsMapper.updateByPrimaryKey(goods);
+		for(Long id:ids){
+//			goodsMapper.deleteByPrimaryKey(id);
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			tbGoods.setIsDelete("1");
+			goodsMapper.updateByPrimaryKey(tbGoods);
 		}		
 	}
 	
@@ -220,36 +223,34 @@ public class GoodsServiceImpl implements GoodsService {
 		TbGoodsExample example=new TbGoodsExample();
 		Criteria criteria = example.createCriteria();
 		
-		criteria.andIsDeleteIsNull();//Ö¸¶¨Ìõ¼şÎªÎ´Âß¼­É¾³ı¼ÇÂ¼
+		criteria.andIsDeleteIsNull();
 		
-		if(goods!=null){	
-			
-			if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
-				//criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
-				criteria.andSellerIdEqualTo(goods.getSellerId());
-			}
-			if(goods.getGoodsName()!=null && goods.getGoodsName().length()>0){
-				criteria.andGoodsNameLike("%"+goods.getGoodsName()+"%");
-			}
-			if(goods.getAuditStatus()!=null && goods.getAuditStatus().length()>0){
-				criteria.andAuditStatusLike("%"+goods.getAuditStatus()+"%");
-			}
-			if(goods.getIsMarketable()!=null && goods.getIsMarketable().length()>0){
-				criteria.andIsMarketableLike("%"+goods.getIsMarketable()+"%");
-			}
-			if(goods.getCaption()!=null && goods.getCaption().length()>0){
-				criteria.andCaptionLike("%"+goods.getCaption()+"%");
-			}
-			if(goods.getSmallPic()!=null && goods.getSmallPic().length()>0){
-				criteria.andSmallPicLike("%"+goods.getSmallPic()+"%");
-			}
-			if(goods.getIsEnableSpec()!=null && goods.getIsEnableSpec().length()>0){
-				criteria.andIsEnableSpecLike("%"+goods.getIsEnableSpec()+"%");
-			}
-			if(goods.getIsDelete()!=null && goods.getIsDelete().length()>0){
-				criteria.andIsDeleteLike("%"+goods.getIsDelete()+"%");
-			}
-	
+		if(goods!=null){			
+					if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
+			criteria.andSellerIdEqualTo(goods.getSellerId());
+		}
+		if(goods.getGoodsName()!=null && goods.getGoodsName().length()>0){
+			criteria.andGoodsNameLike("%"+goods.getGoodsName()+"%");
+		}
+		if(goods.getAuditStatus()!=null && goods.getAuditStatus().length()>0){
+			criteria.andAuditStatusLike("%"+goods.getAuditStatus()+"%");
+		}
+		if(goods.getIsMarketable()!=null && goods.getIsMarketable().length()>0){
+			criteria.andIsMarketableLike("%"+goods.getIsMarketable()+"%");
+		}
+		if(goods.getCaption()!=null && goods.getCaption().length()>0){
+			criteria.andCaptionLike("%"+goods.getCaption()+"%");
+		}
+		if(goods.getSmallPic()!=null && goods.getSmallPic().length()>0){
+			criteria.andSmallPicLike("%"+goods.getSmallPic()+"%");
+		}
+		if(goods.getIsEnableSpec()!=null && goods.getIsEnableSpec().length()>0){
+			criteria.andIsEnableSpecLike("%"+goods.getIsEnableSpec()+"%");
+		}
+		if(goods.getIsDelete()!=null && goods.getIsDelete().length()>0){
+			criteria.andIsDeleteLike("%"+goods.getIsDelete()+"%");
+		}
+
 		}
 		
 		Page<TbGoods> page= (Page<TbGoods>)goodsMapper.selectByExample(example);		
@@ -258,11 +259,29 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Override
 	public void updateStatus(Long[] ids, String status) {
-		for(Long id:ids){
-			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
-			goods.setAuditStatus(status);
-			goodsMapper.updateByPrimaryKey(goods);
-		}		
+		for (Long id : ids) {
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			
+			tbGoods.setAuditStatus(status);
+			
+			goodsMapper.updateByPrimaryKey(tbGoods);
+		}
 	}
 	
+	
+	/**
+	 * æ ¹æ®SPUçš„IDé›†åˆæŸ¥è¯¢SKUåˆ—è¡¨
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+	public List<TbItem>	findItemListByGoodsIdListAndStatus(Long []goodsIds,String status){
+		
+		TbItemExample example=new TbItemExample();
+		com.pinyougou.pojo.TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(status);//çŠ¶æ€
+		criteria.andGoodsIdIn( Arrays.asList(goodsIds));//æŒ‡å®šæ¡ä»¶ï¼šSPUIDé›†åˆ
+		
+		return itemMapper.selectByExample(example);
+	}
 }

@@ -15,19 +15,16 @@
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     
-    
+     <!-- 引入angular的js -->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
-	
-	<!-- 分页组件开始 -->
-	<script src="../plugins/angularjs/pagination.js"></script>
-	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
-	<!-- 分页组件结束 -->
-	
-	<script type="text/javascript" src="../js/base_pagination.js"></script>
-	<script type="text/javascript" src="../js/service/sellerService.js"></script>
-	<script type="text/javascript" src="../js/controller/baseController.js"></script>
-	<script type="text/javascript" src="../js/controller/sellerController.js"></script>
+    <!-- 引入分页相关的JS和CSS -->
+    <script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
     
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/sellerController.js"></script>
+    <script type="text/javascript" src="../js/service/sellerService.js"></script>
 </head>
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="sellerController" ng-init="searchEntity={status:'0'}">
@@ -70,28 +67,27 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr ng-repeat="entity  in  list">
+			                          <tr ng-repeat="entity in list">
 			                              <td><input  type="checkbox"></td>			                              
 				                          <td>{{entity.sellerId}}</td>
 									      <td>{{entity.name}}</td>
 									      <td>{{entity.nickName}}</td>
 									      <td>{{entity.linkmanName}}</td>
-									      <td>{{entity.telephone}}</td>
+									      <td>{{entity.linkmanMobile}}</td>
 		                                 
 		                                  <td class="text-center">                                           
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#sellerModal" ng-click="findOne(entity.sellerId)" >详情</button>                                           
+		                                 	  <button type="button" ng-click="findOne(entity.sellerId)" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#sellerModal" >详情</button>                                           
 		                                  </td>
 			                          </tr>
-									 
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                        
-							   <!--数据列表/-->                        
-							  <tm-pagination conf="paginationConf"></tm-pagination>
+							  
 							 
                         </div>
                         <!-- 数据表格 /-->
-                        
+                         <!-- 分页 -->
+						<tm-pagination conf="paginationConf"></tm-pagination>
                         
                         
                         
@@ -129,8 +125,8 @@
 			      		<td>{{entity.name}}</td>
 			      	</tr>
 			      	<tr>
-			      		<td>店铺名称</td>
-			      		<td>{{entity.nickName}}</td>
+			      		<td>公司手机</td>
+			      		<td>{{entity.mobile}}</td>
 			      	</tr>
 			      	<tr>
 			      		<td>公司电话</td>
@@ -147,19 +143,19 @@
 					<table class="table table-bordered table-striped" >
 			      	<tr>
 			      		<td>联系人姓名</td>
-			      		<td>王美琪</td>
+			      		<td>{{entity.linkmanName}}</td>
 			      	</tr>
 			      	<tr>
 			      		<td>联系人QQ</td>
-			      		<td>78223322</td>
+			      		<td>{{entity.linkmanQq}}</td>
 			      	</tr>
 			      	<tr>
 			      		<td>联系人手机</td>
-			      		<td>13500223322</td>
+			      		<td>{{entity.linkmanMobile}}</td>
 			      	</tr>
 			      	<tr>
 			      		<td>联系人E-Mail</td>
-			      		<td>78223322@qq.com</td>
+			      		<td>{{entity.linkmanEmail}}</td>
 			      	</tr>
 			      </table>
 			    </div>
@@ -218,7 +214,7 @@
 		<div class="modal-footer">						
 			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="updateStatus(entity.sellerId,'1')">审核通过</button>
          	<button class="btn btn-danger"  data-dismiss="modal" aria-hidden="true" ng-click="updateStatus(entity.sellerId,'2')">审核未通过</button>
-            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"  ng-click="updateStatus(entity.sellerId,'3')">关闭商家</button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true" ng-click="updateStatus(entity.sellerId,'3')">关闭商家</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>

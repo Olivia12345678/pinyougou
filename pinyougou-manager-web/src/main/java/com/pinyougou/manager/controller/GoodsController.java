@@ -1,12 +1,16 @@
 package com.pinyougou.manager.controller;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojogroup.Goods;
+import com.pinyougou.pojo.TbItem;
+import com.pinyougou.pojo.group.Goods;
+import com.pinyougou.search.service.ItemSearchService;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
@@ -24,7 +28,7 @@ public class GoodsController {
 	private GoodsService goodsService;
 	
 	/**
-	 * ����ȫ���б�
+	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -34,7 +38,7 @@ public class GoodsController {
 	
 	
 	/**
-	 * ����ȫ���б�
+	 * 返回全部列表
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -42,10 +46,24 @@ public class GoodsController {
 		return goodsService.findPage(page, rows);
 	}
 	
-
+	/**
+	 * 增加
+	 * @param goods
+	 * @return
+	 */
+	@RequestMapping("/add")
+	public Result add(@RequestBody Goods goods){
+		try {
+			goodsService.add(goods);
+			return new Result(true, "增加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "增加失败");
+		}
+	}
 	
 	/**
-	 * �޸�
+	 * 修改
 	 * @param goods
 	 * @return
 	 */
@@ -53,15 +71,15 @@ public class GoodsController {
 	public Result update(@RequestBody Goods goods){
 		try {
 			goodsService.update(goods);
-			return new Result(true, "�޸ĳɹ�");
+			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "�޸�ʧ��");
+			return new Result(false, "修改失败");
 		}
 	}	
 	
 	/**
-	 * ��ȡʵ��
+	 * 获取实体
 	 * @param id
 	 * @return
 	 */
@@ -71,7 +89,7 @@ public class GoodsController {
 	}
 	
 	/**
-	 * ����ɾ��
+	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
@@ -79,15 +97,19 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
-			return new Result(true, "ɾ���ɹ�"); 
+			
+			//从索引库中删除
+			itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+						
+			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "ɾ��ʧ��");
+			return new Result(false, "删除失败");
 		}
 	}
 	
-		/**
-	 * ��ѯ+��ҳ
+	/**
+	 * 查询+分页
 	 * @param brand
 	 * @param page
 	 * @param rows
@@ -98,15 +120,26 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
+	@Reference(timeout=100000)
+	private ItemSearchService itemSearchService;
+	
 	@RequestMapping("/updateStatus")
-	public Result updateStatus(Long[] ids, String status){
+	public Result updateStatus(Long[] ids,String status){
 		try {
 			goodsService.updateStatus(ids, status);
-			return new Result(true, "�ɹ�");
+			
+			if("1".equals(status)){//如果是审核通过 
+				//得到需要导入的SKU列表
+				List<TbItem> itemList = goodsService.findItemListByGoodsIdListAndStatus(ids, status);
+				//导入到solr
+				itemSearchService.importList(itemList);				
+			}		
+			
+			return new Result(true, "修改状态成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "ʧ��");
-		}		
+			return new Result(false, "修改状态失败");
+		}
 	}
 	
 }

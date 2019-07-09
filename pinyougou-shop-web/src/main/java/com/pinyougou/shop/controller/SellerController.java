@@ -24,7 +24,7 @@ public class SellerController {
 	private SellerService sellerService;
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -34,37 +34,36 @@ public class SellerController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findPage")
-	public PageResult  findPage(int page,int rows){			
+	public PageResult findPage(int page,int rows){			
 		return sellerService.findPage(page, rows);
 	}
 	
 	/**
-	 * 增加
+	 * 澧炲姞
 	 * @param seller
 	 * @return
 	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbSeller seller){
-		//密码加密
-		BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-		String password = passwordEncoder.encode(seller.getPassword());//加密
-		seller.setPassword(password);
-		
 		try {
+			
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			seller.setPassword(passwordEncoder.encode(seller.getPassword()));
+			
 			sellerService.add(seller);
-			return new Result(true, "增加成功");
+			return new Result(true, "澧炲姞鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "增加失败");
+			return new Result(false, "澧炲姞澶辫触");
 		}
 	}
 	
 	/**
-	 * 修改
+	 * 淇敼
 	 * @param seller
 	 * @return
 	 */
@@ -72,15 +71,15 @@ public class SellerController {
 	public Result update(@RequestBody TbSeller seller){
 		try {
 			sellerService.update(seller);
-			return new Result(true, "修改成功");
+			return new Result(true, "淇敼鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "修改失败");
+			return new Result(false, "淇敼澶辫触");
 		}
 	}	
 	
 	/**
-	 * 获取实体
+	 * 鑾峰彇瀹炰綋
 	 * @param id
 	 * @return
 	 */
@@ -90,7 +89,7 @@ public class SellerController {
 	}
 	
 	/**
-	 * 批量删除
+	 * 鎵归噺鍒犻櫎
 	 * @param ids
 	 * @return
 	 */
@@ -98,15 +97,15 @@ public class SellerController {
 	public Result delete(String [] ids){
 		try {
 			sellerService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "鍒犻櫎鎴愬姛"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "删除失败");
+			return new Result(false, "鍒犻櫎澶辫触");
 		}
 	}
 	
 		/**
-	 * 查询+分页
+	 * 鏌ヨ+鍒嗛〉
 	 * @param brand
 	 * @param page
 	 * @param rows

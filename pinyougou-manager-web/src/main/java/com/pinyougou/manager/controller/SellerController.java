@@ -23,7 +23,7 @@ public class SellerController {
 	private SellerService sellerService;
 	
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -33,7 +33,7 @@ public class SellerController {
 	
 	
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -42,7 +42,7 @@ public class SellerController {
 	}
 	
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	 * @param seller
 	 * @return
 	 */
@@ -50,15 +50,15 @@ public class SellerController {
 	public Result add(@RequestBody TbSeller seller){
 		try {
 			sellerService.add(seller);
-			return new Result(true, "Ôö¼Ó³É¹¦");
+			return new Result(true, "å¢åŠ æˆåŠŸ");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "Ôö¼ÓÊ§°Ü");
+			return new Result(false, "å¢åŠ å¤±è´¥");
 		}
 	}
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 * @param seller
 	 * @return
 	 */
@@ -66,15 +66,15 @@ public class SellerController {
 	public Result update(@RequestBody TbSeller seller){
 		try {
 			sellerService.update(seller);
-			return new Result(true, "ĞŞ¸Ä³É¹¦");
+			return new Result(true, "ä¿®æ”¹æˆåŠŸ");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "ĞŞ¸ÄÊ§°Ü");
+			return new Result(false, "ä¿®æ”¹å¤±è´¥");
 		}
 	}	
 	
 	/**
-	 * »ñÈ¡ÊµÌå
+	 * è·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class SellerController {
 	}
 	
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 * @param ids
 	 * @return
 	 */
@@ -92,15 +92,15 @@ public class SellerController {
 	public Result delete(String [] ids){
 		try {
 			sellerService.delete(ids);
-			return new Result(true, "É¾³ı³É¹¦"); 
+			return new Result(true, "åˆ é™¤æˆåŠŸ"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "É¾³ıÊ§°Ü");
+			return new Result(false, "åˆ é™¤å¤±è´¥");
 		}
 	}
 	
 		/**
-	 * ²éÑ¯+·ÖÒ³
+	 * æŸ¥è¯¢+åˆ†é¡µ
 	 * @param brand
 	 * @param page
 	 * @param rows
@@ -115,12 +115,11 @@ public class SellerController {
 	public Result updateStatus(String sellerId,String status){
 		try {
 			sellerService.updateStatus(sellerId, status);
-			return new Result(true, "³É¹¦");
+			return new Result(true, "å®¡æ ¸çŠ¶æ€æˆåŠŸ"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "Ê§°Ü");
+			return new Result(false, "å®¡æ ¸çŠ¶æ€å¤±è´¥");
 		}
-		
 	}
 	
 }

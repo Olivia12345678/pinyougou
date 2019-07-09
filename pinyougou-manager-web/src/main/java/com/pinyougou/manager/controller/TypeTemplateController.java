@@ -1,6 +1,5 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ public class TypeTemplateController {
 	private TypeTemplateService typeTemplateService;
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -34,7 +33,7 @@ public class TypeTemplateController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -43,7 +42,7 @@ public class TypeTemplateController {
 	}
 	
 	/**
-	 * 增加
+	 * 澧炲姞
 	 * @param typeTemplate
 	 * @return
 	 */
@@ -51,15 +50,15 @@ public class TypeTemplateController {
 	public Result add(@RequestBody TbTypeTemplate typeTemplate){
 		try {
 			typeTemplateService.add(typeTemplate);
-			return new Result(true, "增加成功");
+			return new Result(true, "澧炲姞鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "增加失败");
+			return new Result(false, "澧炲姞澶辫触");
 		}
 	}
 	
 	/**
-	 * 修改
+	 * 淇敼
 	 * @param typeTemplate
 	 * @return
 	 */
@@ -67,15 +66,15 @@ public class TypeTemplateController {
 	public Result update(@RequestBody TbTypeTemplate typeTemplate){
 		try {
 			typeTemplateService.update(typeTemplate);
-			return new Result(true, "修改成功");
+			return new Result(true, "淇敼鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "修改失败");
+			return new Result(false, "淇敼澶辫触");
 		}
 	}	
 	
 	/**
-	 * 获取实体
+	 * 鑾峰彇瀹炰綋
 	 * @param id
 	 * @return
 	 */
@@ -85,7 +84,7 @@ public class TypeTemplateController {
 	}
 	
 	/**
-	 * 批量删除
+	 * 鎵归噺鍒犻櫎
 	 * @param ids
 	 * @return
 	 */
@@ -93,15 +92,15 @@ public class TypeTemplateController {
 	public Result delete(Long [] ids){
 		try {
 			typeTemplateService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "鍒犻櫎鎴愬姛"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "删除失败");
+			return new Result(false, "鍒犻櫎澶辫触");
 		}
 	}
 	
 		/**
-	 * 查询+分页
+	 * 鏌ヨ+鍒嗛〉
 	 * @param brand
 	 * @param page
 	 * @param rows
@@ -111,7 +110,5 @@ public class TypeTemplateController {
 	public PageResult search(@RequestBody TbTypeTemplate typeTemplate, int page, int rows  ){
 		return typeTemplateService.findPage(typeTemplate, page, rows);		
 	}
-	
-
 	
 }

@@ -5,9 +5,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojogroup.Goods;
+import com.pinyougou.pojo.group.Goods;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
@@ -25,7 +26,7 @@ public class GoodsController {
 	private GoodsService goodsService;
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findAll")
@@ -35,7 +36,7 @@ public class GoodsController {
 	
 	
 	/**
-	 * 返回全部列表
+	 * 杩斿洖鍏ㄩ儴鍒楄〃
 	 * @return
 	 */
 	@RequestMapping("/findPage")
@@ -44,52 +45,52 @@ public class GoodsController {
 	}
 	
 	/**
-	 * 增加
+	 * 澧炲姞
 	 * @param goods
 	 * @return
 	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody Goods goods){
-		//获取商家ID
-		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
-		goods.getGoods().setSellerId(sellerId);//设置商家ID
-		
 		try {
+			// 鑾峰緱鍟嗗淇℃伅:
+			String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+			
+			goods.getGoods().setSellerId(sellerId);
+			
 			goodsService.add(goods);
-			return new Result(true, "增加成功");
+			return new Result(true, "澧炲姞鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "增加失败");
+			return new Result(false, "澧炲姞澶辫触");
 		}
 	}
 	
 	/**
-	 * 修改
+	 * 淇敼
 	 * @param goods
 	 * @return
 	 */
 	@RequestMapping("/update")
 	public Result update(@RequestBody Goods goods){
-		//当前商家ID
+		// 鑾峰緱鍟嗗淇℃伅:
 		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		//首先判断商品是否是该商家的商品 
 		Goods goods2 = goodsService.findOne(goods.getGoods().getId());
-		if(!goods2.getGoods().getSellerId().equals(sellerId) || !goods.getGoods().getSellerId().equals(sellerId) ){
-			return new Result(false, "非法操作");
-		}		
+		if(!sellerId.equals(goods2.getGoods().getSellerId()) || !sellerId.equals(goods.getGoods().getSellerId())){
+			return new Result(false, "闈炴硶鎿嶄綔");
+		}
 		
 		try {
 			goodsService.update(goods);
-			return new Result(true, "修改成功");
+			return new Result(true, "淇敼鎴愬姛");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "修改失败");
+			return new Result(false, "淇敼澶辫触");
 		}
 	}	
 	
 	/**
-	 * 获取实体
+	 * 鑾峰彇瀹炰綋
 	 * @param id
 	 * @return
 	 */
@@ -99,7 +100,7 @@ public class GoodsController {
 	}
 	
 	/**
-	 * 批量删除
+	 * 鎵归噺鍒犻櫎
 	 * @param ids
 	 * @return
 	 */
@@ -107,15 +108,15 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
-			return new Result(true, "删除成功"); 
+			return new Result(true, "鍒犻櫎鎴愬姛"); 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "删除失败");
+			return new Result(false, "鍒犻櫎澶辫触");
 		}
 	}
 	
 		/**
-	 * 查询+分页
+	 * 鏌ヨ+鍒嗛〉
 	 * @param brand
 	 * @param page
 	 * @param rows
@@ -123,9 +124,10 @@ public class GoodsController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
-		//获取商家ID
+		
 		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
 		goods.setSellerId(sellerId);
+		
 		return goodsService.findPage(goods, page, rows);		
 	}
 	

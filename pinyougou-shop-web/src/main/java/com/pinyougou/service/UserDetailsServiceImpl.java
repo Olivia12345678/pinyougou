@@ -1,7 +1,6 @@
 package com.pinyougou.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -13,14 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.pinyougou.pojo.TbSeller;
 import com.pinyougou.sellergoods.service.SellerService;
-/**
- * ÈÏÖ¤Àà
- * @author Administrator
- *
- */
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	
 	private SellerService sellerService;
 	
 	public void setSellerService(SellerService sellerService) {
@@ -29,22 +23,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("¾­¹ıÁËUserDetailsServiceImpl");
-		//¹¹½¨½ÇÉ«ÁĞ±í
-		List<GrantedAuthority> grantAuths=new ArrayList();
-		grantAuths.add(new SimpleGrantedAuthority("ROLE_SELLER"));
 		
-		//µÃµ½ÉÌ¼Ò¶ÔÏó
+		List<GrantedAuthority> grantAuths = new ArrayList();
+		grantAuths.add(new SimpleGrantedAuthority("ROLE_SELLER"));
+		/**
+		 * User:
+		 * * å‚æ•°ï¼š
+		 * 	* 1.ç”¨æˆ·å
+		 *  * 2.å¯†ç 
+		 *  * 3.è®¤è¯ä¿¡æ¯ï¼ˆè§’è‰²ï¼‰
+		 */
+		// å»æ•°æ®åº“è¿›è¡ŒæŸ¥è¯¢:
 		TbSeller seller = sellerService.findOne(username);
-		if(seller!=null){
+		if(seller != null){
 			if(seller.getStatus().equals("1")){
-				return new User(username,seller.getPassword(),grantAuths);
+				return new User(username,seller.getPassword(),grantAuths );
 			}else{
 				return null;
-			}			
-		}else{
-			return null;
+			}
 		}
+		return null;
+		
 	}
 
 }

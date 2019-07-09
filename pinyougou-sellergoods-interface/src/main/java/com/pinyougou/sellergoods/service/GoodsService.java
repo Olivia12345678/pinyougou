@@ -1,44 +1,46 @@
 package com.pinyougou.sellergoods.service;
 import java.util.List;
+
 import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojogroup.Goods;
+import com.pinyougou.pojo.TbItem;
+import com.pinyougou.pojo.group.Goods;
 
 import entity.PageResult;
 /**
- * ·şÎñ²ã½Ó¿Ú
+ * æœåŠ¡å±‚æ¥å£
  * @author Administrator
  *
  */
 public interface GoodsService {
 
 	/**
-	 * ·µ»ØÈ«²¿ÁĞ±í
+	 * è¿”å›å…¨éƒ¨åˆ—è¡¨
 	 * @return
 	 */
 	public List<TbGoods> findAll();
 	
 	
 	/**
-	 * ·µ»Ø·ÖÒ³ÁĞ±í
+	 * è¿”å›åˆ†é¡µåˆ—è¡¨
 	 * @return
 	 */
 	public PageResult findPage(int pageNum,int pageSize);
 	
 	
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	*/
 	public void add(Goods goods);
 	
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	public void update(Goods goods);
 	
 
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -46,24 +48,27 @@ public interface GoodsService {
 	
 	
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 * @param ids
 	 */
 	public void delete(Long [] ids);
 
 	/**
-	 * ·ÖÒ³
-	 * @param pageNum µ±Ç°Ò³ Âë
-	 * @param pageSize Ã¿Ò³¼ÇÂ¼Êı
+	 * åˆ†é¡µ
+	 * @param pageNum å½“å‰é¡µ ç 
+	 * @param pageSize æ¯é¡µè®°å½•æ•°
 	 * @return
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum,int pageSize);
 	
-	/**
-	 * ĞŞ¸Ä×´Ì¬
-	 * @param ids
-	 * @param status
-	 */
-	public void updateStatus(Long [] ids,String status );
+	public void updateStatus(Long[] ids,String status);
 	
+	
+	/**
+	 * æ ¹æ®SPUçš„IDé›†åˆæŸ¥è¯¢SKUåˆ—è¡¨
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+	public List<TbItem>	findItemListByGoodsIdListAndStatus(Long []goodsIds,String status);
 }

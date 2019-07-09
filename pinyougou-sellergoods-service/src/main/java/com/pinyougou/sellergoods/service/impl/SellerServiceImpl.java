@@ -1,8 +1,8 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -16,19 +16,18 @@ import com.pinyougou.sellergoods.service.SellerService;
 import entity.PageResult;
 
 /**
- * ·şÎñÊµÏÖ²ã
+ * æœåŠ¡å®ç°å±‚
  * @author Administrator
  *
  */
 @Service
-@Transactional
 public class SellerServiceImpl implements SellerService {
 
 	@Autowired
 	private TbSellerMapper sellerMapper;
 	
 	/**
-	 * ²éÑ¯È«²¿
+	 * æŸ¥è¯¢å…¨éƒ¨
 	 */
 	@Override
 	public List<TbSeller> findAll() {
@@ -36,7 +35,7 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	/**
-	 * °´·ÖÒ³²éÑ¯
+	 * æŒ‰åˆ†é¡µæŸ¥è¯¢
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
@@ -46,18 +45,21 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	 */
 	@Override
-	public void add(TbSeller seller) {		
-		seller.setStatus("0");//×´Ì¬
-		seller.setCreateTime(new Date());//ÉêÇëÈÕÆÚ
+	public void add(TbSeller seller) {
+		// è®¾ç½®å•†å®¶çŠ¶æ€
+		seller.setStatus("0");
+		
+		seller.setCreateTime(new Date());
+		
 		sellerMapper.insert(seller);		
 	}
 
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 */
 	@Override
 	public void update(TbSeller seller){
@@ -65,7 +67,7 @@ public class SellerServiceImpl implements SellerService {
 	}	
 	
 	/**
-	 * ¸ù¾İID»ñÈ¡ÊµÌå
+	 * æ ¹æ®IDè·å–å®ä½“
 	 * @param id
 	 * @return
 	 */
@@ -75,7 +77,7 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	/**
-	 * ÅúÁ¿É¾³ı
+	 * æ‰¹é‡åˆ é™¤
 	 */
 	@Override
 	public void delete(String[] ids) {
@@ -166,11 +168,13 @@ public class SellerServiceImpl implements SellerService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+		
 	@Override
 	public void updateStatus(String sellerId, String status) {
-		
 		TbSeller seller = sellerMapper.selectByPrimaryKey(sellerId);
+		
 		seller.setStatus(status);
+		
 		sellerMapper.updateByPrimaryKey(seller);
 	}
 	

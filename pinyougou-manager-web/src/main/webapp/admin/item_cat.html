@@ -14,19 +14,17 @@
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     
+    <!-- 引入angular的js -->
     <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
-	
-
-	
-	<script type="text/javascript" src="../js/base.js"></script>
-	<script type="text/javascript" src="../js/service/itemCatService.js"></script>
-	<script type="text/javascript" src="../js/controller/baseController.js"></script>
-	<script type="text/javascript" src="../js/controller/itemCatController.js"></script>
+    
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/itemCatController.js"></script>
+    <script type="text/javascript" src="../js/service/itemCatService.js"></script>
     
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" 
-   ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -43,7 +41,7 @@
 		                       		<a href="#" ng-click="grade=2;selectList(entity_1)">{{entity_1.name}}</a>
 		                        </li>
 		                        <li>
-		                        	<a href="#" ng-click="grade=3;selectList(entity_2)" >{{entity_2.name}}</a>
+		                        	<a href="#" ng-click="grade=3;selectList(entity_2)">{{entity_2.name}}</a>
 		                        </li>
 	                        </ol>
 
@@ -83,17 +81,15 @@
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>									    
 									      <td>
-									      	{{entity.typeId}}    
+									      	{{entity.typeId}}  
 									      </td>									      
-		                                  <td class="text-center">
-		                                      <span ng-if="grade!=3">
-		                                         <button type="button" class="btn bg-olive btn-xs" ng-click="setGrade(grade+1);selectList(entity)">查询下级</button> 		                      
-		                                      </span>		                                     
-		                                                    
+		                                  <td class="text-center">		      
+			                                  <span ng-if="grade != 3">                          
+			                                      <button type="button" ng-click="setGrade(grade+1);selectList(entity);" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
+			                                  </span>     
 		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
 		                                  </td>
 			                          </tr>
-									  
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                      

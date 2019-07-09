@@ -12,12 +12,14 @@
     <link rel="stylesheet" type="text/css" href="css/widget-jquery.autocomplete.css" />
     <link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
     
-    <script type="text/javascript" src="plugins/angularjs/angular.min.js"> </script>
-	<script type="text/javascript" src="js/base.js"> </script>
-	<script type="text/javascript" src="js/service/contentService.js"> </script>
-	<script type="text/javascript" src="js/controller/contentController.js"> </script>
     
+    <!-- 引入angular的js -->
+    <script type="text/javascript" src="./plugins/angularjs/angular.min.js"></script>
+    <!-- 引入分页相关的JS和CSS -->
     
+    <script type="text/javascript" src="./js/base.js"></script>
+    <script type="text/javascript" src="./js/controller/contentController.js"></script>
+    <script type="text/javascript" src="./js/service/contentService.js"></script>
 </head>
 
 <body ng-app="pinyougou" ng-controller="contentController" ng-init="findByCategoryId(1)">
@@ -72,8 +74,8 @@
 							<form action="" class="sui-form form-inline">
 								<!--searchAutoComplete-->
 								<div class="input-append">
-									<input type="text" id="autocomplete" type="text" class="input-error input-xxlarge" />
-									<button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+									<input type="text" id="autocomplete" ng-model="keywords" type="text" class="input-error input-xxlarge" />
+									<button class="sui-btn btn-xlarge btn-danger" ng-click="search()" type="button">搜索</button>
 								</div>
 							</form>
 						</div>
@@ -523,21 +525,26 @@
 						</div>
 					</div>
 				</div>
+				
 				<div class="yui3-u Center banerArea">
 					<!--banner轮播-->
 					<div id="myCarousel" data-ride="carousel" data-interval="4000" class="sui-carousel slide">
 					  <ol class="carousel-indicators">
-					  
+					    <!-- <li data-target="#myCarousel" data-slide-to="0" class="active"></li> -->
 					    <li data-target="#myCarousel" data-slide-to="{{$index}}" class="{{$index==0?'active':''}}" ng-repeat="item in contentList[1]"></li>
-					    
 					  </ol>
 					  <div class="carousel-inner">
+					   <!--  <div class="active item">
+					    <a href="http://baidu2.wypxj.com/">
+					    	<img src="img/banner1.jpg"  />
+					      </a>
+					    </div> -->
 					    <div class="{{$index==0?'active':''}} item" ng-repeat="item in contentList[1]">
 					    <a href="{{item.url}}">
-					    	<img src="{{item.pic}}"  />
+					    	<img src="{{item.pic}}"  width="730" height="454"/>
 					      </a>
-					    </div>				   
-					    
+					    </div>
+					   	
 					  </div><a href="#myCarousel" data-slide="prev" class="carousel-control left">‹</a><a href="#myCarousel" data-slide="next" class="carousel-control right">›</a>
 					</div>
 				</div>

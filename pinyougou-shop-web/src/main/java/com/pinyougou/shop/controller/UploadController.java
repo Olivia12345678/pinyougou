@@ -9,29 +9,33 @@ import entity.Result;
 import util.FastDFSClient;
 
 @RestController
+@RequestMapping("/upload")
 public class UploadController {
 	
 	@Value("${FILE_SERVER_URL}")
 	private String file_server_url;
-
-	@RequestMapping("/upload")
-	public Result upload(MultipartFile file){
-		
-		String originalFilename = file.getOriginalFilename();//»ñÈ¡ÎÄ¼şÃû
-		String extName=originalFilename.substring( originalFilename.lastIndexOf(".")+1);//µÃµ½À©Õ¹Ãû
+	
+	@RequestMapping("/uploadFile")
+	public Result uploadFile(MultipartFile file){
 		
 		try {
-			util.FastDFSClient client=new FastDFSClient("classpath:config/fdfs_client.conf");
-			String fileId = client.uploadFile(file.getBytes(), extName);
-			String url=file_server_url+fileId;//Í¼Æ¬ÍêÕûµØÖ·
-			return new Result(true, url);
+			// è·å¾—æ–‡ä»¶å:
+			String fileName = file.getOriginalFilename();
+			// è·å¾—æ–‡ä»¶çš„æ‰©å±•å:
+			String extName = fileName.substring( fileName.lastIndexOf(".")+1 );
+			// åˆ›å»ºå·¥å…·ç±»
+			util.FastDFSClient client = new FastDFSClient("classpath:fastDFS/fdfs_client.conf");
 			
+			String path = client.uploadFile(file.getBytes(), extName); // group1/M00/
+			
+			String url = file_server_url + path;
+			
+			return new Result(true, url);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false, "ÉÏ´«Ê§°Ü");
+			return new Result(false, "ä¸Šä¼ å¤±è´¥ï¼");
 		}
 		
+		
 	}
-	
-	
 }
