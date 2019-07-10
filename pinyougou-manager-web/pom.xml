@@ -8,8 +8,7 @@
   <artifactId>pinyougou-manager-web</artifactId>
   <packaging>war</packaging>
   
-  
-   <dependencies>
+    <dependencies>
     <!-- Spring -->
 	<dependency>
 		<groupId>org.springframework</groupId>
@@ -72,12 +71,7 @@
 	    <groupId>commons-codec</groupId>
 	    <artifactId>commons-codec</artifactId>
 	</dependency>
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>servlet-api</artifactId>		
-		<scope>provided</scope>
-	</dependency>
-
+	<!-- 身份认证的依赖 -->
 	<dependency>
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-web</artifactId>
@@ -87,6 +81,13 @@
 		<groupId>org.springframework.security</groupId>
 		<artifactId>spring-security-config</artifactId>
 	</dependency>
+	
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>		
+		<scope>provided</scope>
+	</dependency>
+
 
 	<dependency>
 		<groupId>com.pinyougou</groupId>
@@ -108,7 +109,12 @@
 		<artifactId>pinyougou-search-interface</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
-   </dependencies>
+	<dependency>
+		<groupId>com.pinyougou</groupId>
+		<artifactId>pinyougou-page-interface</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+    </dependencies>
   
   
     <build>  
@@ -126,6 +132,5 @@
 	  	  </plugin>
 	  </plugins>  
     </build>
-  
-  
+    
 </project>
